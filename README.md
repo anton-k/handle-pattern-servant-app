@@ -99,7 +99,7 @@ Executable `app/` implements interfaces initialises service state and launchaes 
 In this example and tutorial we will learn how to build flexible
 web-apps with the help of handler pattern. We will mention some key-factors
 of the web-development domain, discuss the problems and solutions
-and look at how to combine Readr pattern with servant.
+and look at how to combine Handler pattern with servant.
 While implementing a small app.
 
 What we will learn:
