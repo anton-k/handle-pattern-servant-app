@@ -13,7 +13,7 @@ import GHC.Records as X (HasField(..))
 import Deriving.Aeson
 import Deriving.Aeson.Stock
 import Servant.API (FromHttpApiData)
-import App as X
+import Error as X
 
 type Url = String
 

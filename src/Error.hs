@@ -1,5 +1,5 @@
--- | Reader pattern monad
-module App
+-- | Code to throw custom errors
+module Error
   ( ApiError (..)
   , throwApi
   ) where

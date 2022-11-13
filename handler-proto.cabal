@@ -26,10 +26,10 @@ source-repository head
 library
   exposed-modules:
       Api
-      App
       DI.Log
       DI.Setup
       DI.Time
+      Error
       Server
       Server.GetMessage
       Server.ListTag
@@ -58,13 +58,9 @@ library
       aeson
     , base >=4.7 && <5
     , bytestring
-    , containers
     , deriving-aeson
-    , exceptions
-    , mtl
     , servant
     , servant-server
-    , stm
     , text
     , time
   default-language: Haskell2010
@@ -102,7 +98,6 @@ executable handler-proto-exe
     , bytestring
     , containers
     , deriving-aeson
-    , exceptions
     , handler-proto
     , immortal
     , mtl
@@ -141,14 +136,10 @@ test-suite handler-proto-test
       aeson
     , base >=4.7 && <5
     , bytestring
-    , containers
     , deriving-aeson
-    , exceptions
     , handler-proto
-    , mtl
     , servant
     , servant-server
-    , stm
     , text
     , time
   default-language: Haskell2010

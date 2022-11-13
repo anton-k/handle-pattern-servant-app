@@ -24,14 +24,10 @@ dependencies:
 - aeson
 - bytestring
 - deriving-aeson
-- exceptions
-- mtl
-- stm
 - time
 - text
 - servant
 - servant-server
-- containers
 
 default-extensions:
   - DataKinds
@@ -75,11 +71,14 @@ executables:
     - -with-rtsopts=-N
     dependencies:
     - immortal
+    - mtl
     - optparse-applicative
     - yaml
     - handler-proto
     - servant-server
     - warp
+    - containers
+    - stm
 
 tests:
   handler-proto-test:
