@@ -1,0 +1,154 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.35.0.
+--
+-- see: https://github.com/sol/hpack
+
+name:           handler-proto
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/githubuser/handler-proto#readme>
+homepage:       https://github.com/githubuser/handler-proto#readme
+bug-reports:    https://github.com/githubuser/handler-proto/issues
+author:         Author name here
+maintainer:     example@example.com
+copyright:      2022 Author name here
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    CHANGELOG.md
+
+source-repository head
+  type: git
+  location: https://github.com/githubuser/handler-proto
+
+library
+  exposed-modules:
+      Api
+      App
+      DI.Log
+      DI.Setup
+      DI.Time
+      Server
+      Server.GetMessage
+      Server.ListTag
+      Server.Save
+      Server.ToggleLog
+      Types
+  other-modules:
+      Paths_handler_proto
+  hs-source-dirs:
+      src
+  default-extensions:
+      DataKinds
+      DeriveGeneric
+      DerivingVia
+      DuplicateRecordFields
+      ConstraintKinds
+      FlexibleContexts
+      GeneralizedNewtypeDeriving
+      ImportQualifiedPost
+      OverloadedStrings
+      OverloadedRecordDot
+      RecordWildCards
+      TypeOperators
+  ghc-options: -Wall -Werror -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -O2 -threaded
+  build-depends:
+      aeson
+    , base >=4.7 && <5
+    , bytestring
+    , containers
+    , deriving-aeson
+    , exceptions
+    , mtl
+    , servant
+    , servant-server
+    , stm
+    , text
+    , time
+  default-language: Haskell2010
+
+executable handler-proto-exe
+  main-is: Main.hs
+  other-modules:
+      App.DI.Db
+      App.DI.Db.MockDb
+      App.DI.Log
+      App.DI.Setup
+      App.DI.Time
+      App.State
+      Config
+      Paths_handler_proto
+  hs-source-dirs:
+      app
+  default-extensions:
+      DataKinds
+      DeriveGeneric
+      DerivingVia
+      DuplicateRecordFields
+      ConstraintKinds
+      FlexibleContexts
+      GeneralizedNewtypeDeriving
+      ImportQualifiedPost
+      OverloadedStrings
+      OverloadedRecordDot
+      RecordWildCards
+      TypeOperators
+  ghc-options: -Wall -Werror -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -O2 -threaded -O2 -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      aeson
+    , base >=4.7 && <5
+    , bytestring
+    , containers
+    , deriving-aeson
+    , exceptions
+    , handler-proto
+    , immortal
+    , mtl
+    , optparse-applicative
+    , servant
+    , servant-server
+    , stm
+    , text
+    , time
+    , warp
+    , yaml
+  default-language: Haskell2010
+
+test-suite handler-proto-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_handler_proto
+  hs-source-dirs:
+      test
+  default-extensions:
+      DataKinds
+      DeriveGeneric
+      DerivingVia
+      DuplicateRecordFields
+      ConstraintKinds
+      FlexibleContexts
+      GeneralizedNewtypeDeriving
+      ImportQualifiedPost
+      OverloadedStrings
+      OverloadedRecordDot
+      RecordWildCards
+      TypeOperators
+  ghc-options: -Wall -Werror -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -O2 -threaded -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      aeson
+    , base >=4.7 && <5
+    , bytestring
+    , containers
+    , deriving-aeson
+    , exceptions
+    , handler-proto
+    , mtl
+    , servant
+    , servant-server
+    , stm
+    , text
+    , time
+  default-language: Haskell2010
