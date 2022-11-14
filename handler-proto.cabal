@@ -70,6 +70,7 @@ executable handler-proto-exe
   other-modules:
       App.DI.Db
       App.DI.Db.MockDb
+      App.DI.Foo
       App.DI.Log
       App.DI.Setup
       App.DI.Time
