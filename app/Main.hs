@@ -12,6 +12,7 @@ import Control.Monad (forever)
 import Server
 import DI.Log
 import App.DI.Db
+import App.DI.Foo
 import App.DI.Log
 import App.DI.Setup
 import App.DI.Time
@@ -37,13 +38,14 @@ runServer config = do
   itime <- initTime config.time
   let
     isetup = initSetup verboseVar
+    ifoo   = initFoo
 
     -- init local envirnoments
     env =
       Env
         { save       = Save.Env (addLogContext "api.save" ilog) idb.save itime
         , getMessage = GetMessage.Env idb.getMessage (addLogContext "api.get-message" ilog)
-        , listTag    = ListTag.Env idb.listTag (addLogContext "api.list-tag" ilog)
+        , listTag    = ListTag.Env idb.listTag (addLogContext "api.list-tag" ilog) ifoo
         , toggleLogs = ToggleLog.Env (addLogContext "api.toggle-log" ilog) isetup
         }
 
