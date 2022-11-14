@@ -215,7 +215,7 @@ data Db = Db
 and instead of directly calling those functions we pass them 
 around to functions that need them:
 
-```
+```haskell
 doSomethingWithStorage :: Db -> Message -> IO ()
 doSomethingWithStorage Db{..} msg = ... use interface ...
 ```
@@ -294,7 +294,7 @@ The function `initLog` hides dependency on mutable interface in the logger.
 and we have to face the reality of `isVerbose` mutable `TVar`-state.
 But what if it was also an interface? 
 
-We can provide an interface tweak the logger state:
+We can provide an interface to tweak the logger state:
 
 ```haskell
 -- | Interface for tweaking configs
@@ -378,7 +378,7 @@ in the `app/App/DI` modules.
 
 ### Using it with Servant
 
-In the servant we need to wrap responce to Servant.Handler monad.
+In the servant we need to wrap response to Servant.Handler monad.
 The main idea of the approach is to use servant only on top-level Server-method
 and inside handlers we should work only in terms of the `IO` and interfaces
 that are passed as arguments to the handlers.
