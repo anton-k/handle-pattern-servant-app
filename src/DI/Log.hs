@@ -4,6 +4,7 @@ module DI.Log
   , mapLog
   , addLogContext
   , display
+  , logFun
   ) where
 
 import Data.Text qualified as Text
@@ -28,3 +29,24 @@ mapLog go logger = Log
 
 display :: Show a => a -> Text
 display = Text.pack . show
+
+-- | Wrap function call with logging
+-- with possible failure report
+--
+-- if getResult argument returns Nothing we treat it as failure
+logFun :: (Show a, Show c)
+  => Log
+  -> Text
+  -> Text
+  -> (b -> Maybe c)
+  -> (a -> IO b) -> a -> IO b
+logFun logger context funName getResult fun arg = do
+  logInfo $ echoInput "Call"
+  res <- fun arg
+  case getResult res of
+    Just out -> logInfo $ Text.unwords ["Result of", funName, "call:", display out]
+    Nothing  -> logError $ echoInput "Failed to get result for"
+  pure res
+  where
+    Log{..} = addLogContext context logger
+    echoInput prefix = Text.unwords [prefix, funName, "with", display arg]

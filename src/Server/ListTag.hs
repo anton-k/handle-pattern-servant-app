@@ -3,6 +3,7 @@ module Server.ListTag
   ( Env(..)
   , Db(..)
   , handle
+  , dbLog
   ) where
 
 import DI.Log
@@ -16,6 +17,12 @@ data Env = Env
 data Db = Db
   { listTag :: Tag -> IO [Message]
   }
+
+-- | Adapts DB interface so that every call to it get's logged
+-- under storage context
+dbLog :: Log -> Db -> Db
+dbLog logger (Db listTag) =
+  Db $ logFun logger "storage" "Db.listTag" Just listTag
 
 -----------------------------------------
 -- Handler

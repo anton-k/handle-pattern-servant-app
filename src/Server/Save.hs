@@ -3,6 +3,7 @@ module Server.Save
   ( Env(..)
   , Db(..)
   , handle
+  , dbLog
   ) where
 
 import DI.Log
@@ -20,6 +21,10 @@ data Env = Env
   , db    :: Db
   , time  :: Time
   }
+
+dbLog :: Log -> Db -> Db
+dbLog logger (Db saveMessage) =
+  Db $ logFun logger "storage" "Db.saveMessage" Just saveMessage
 
 -----------------------------------------
 -- Handler

@@ -24,8 +24,8 @@ dependencies:
 - aeson
 - bytestring
 - deriving-aeson
-- time
 - text
+- time
 - servant
 - servant-server
 

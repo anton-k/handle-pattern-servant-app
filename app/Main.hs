@@ -41,9 +41,18 @@ runServer config = do
     -- init local envirnoments
     env =
       Env
-        { save       = Save.Env (addLogContext "api.save" ilog) idb.save itime
-        , getMessage = GetMessage.Env idb.getMessage (addLogContext "api.get-message" ilog)
-        , listTag    = ListTag.Env idb.listTag (addLogContext "api.list-tag" ilog)
+        { save =
+            let logSave = addLogContext "api.save" ilog
+            in  Save.Env logSave (Save.dbLog logSave idb.save) itime
+
+        , getMessage =
+            let logGetMessage = addLogContext "api.get-message" ilog
+            in  GetMessage.Env (GetMessage.dbLog logGetMessage idb.getMessage) logGetMessage
+
+        , listTag =
+            let logListTag = addLogContext "api.list-tag" ilog
+            in  ListTag.Env (ListTag.dbLog logListTag idb.listTag) logListTag
+
         , toggleLogs = ToggleLog.Env (addLogContext "api.toggle-log" ilog) isetup
         }
 

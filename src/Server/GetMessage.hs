@@ -3,6 +3,7 @@ module Server.GetMessage
   ( Env(..)
   , Db(..)
   , handle
+  , dbLog
   ) where
 
 import DI.Log
@@ -19,6 +20,12 @@ data Env = Env
 data Db = Db
   { getMessage :: MessageId -> IO (Maybe Message)
   }
+
+-- | Adapts DB interface so that every call to it get's logged
+-- under storage context
+dbLog :: Log -> Db -> Db
+dbLog logger (Db getMessage) =
+  Db $ logFun logger "storage" "Db.getMessage" id getMessage
 
 -----------------------------------------
 -- Handler
