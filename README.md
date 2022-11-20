@@ -1,11 +1,11 @@
-# Haskell Reversed Handler pattern and servant example app
+# Haskell Reversed Handle pattern and servant example app
 
-Show case for a small application written with servant and Reversed Handler pattern.
-It is an example on how to make Dependency Injection in Haskell with Handler-pattern.
+Show case for a small application written with servant and Reversed Handle pattern.
+It is an example on how to make Dependency Injection in Haskell with Handle-pattern.
 
 The main idea of reversed handler pattern is that we build interfaces for external services
 not driven by services themselves but by the methods we use in concrete API-routes.
-In the original article on [Handler pattern](https://jaspervdj.be/posts/2018-03-08-handle-pattern.html)
+In the original article on [Handle pattern](https://jaspervdj.be/posts/2018-03-08-handle-pattern.html)
 we describe interfaces to DB or Logging based on the natural API of the library.
 But I argue that it's much more beneficial to create small interfaces dedicated to concrete
 task of the API-route. This way our interfaces ar more flexible and local regarding to change
@@ -72,7 +72,7 @@ We can
   make toggle-logs
   ```
 
-The rest of the article is tutorial explaining the application of Handler pattern
+The rest of the article is tutorial explaining the application of Handle pattern
 in Haskell to build web-apps.
 
 ### The application structure
@@ -99,7 +99,7 @@ Executable `app/` implements interfaces initialises service state and launchaes 
 In this example and tutorial we will learn how to build flexible
 web-apps with the help of handler pattern. We will mention some key-factors
 of the web-development domain, discuss the problems and solutions
-and look at how to combine Handler pattern with servant.
+and look at how to combine Handle pattern with servant.
 While implementing a small app.
 
 What we will learn:
@@ -121,9 +121,9 @@ What we will learn:
 
 * How to hide mutable state with interfaces
 
-In this app we use the Handler pattern for DI's
-But our version of Handler pattern is reversed in terms of where interfaces originate.
-In original Handler pattern we wrap external services with concrete interfaces.
+In this app we use the Handle pattern for DI's
+But our version of Handle pattern is reversed in terms of where interfaces originate.
+In original Handle pattern we wrap external services with concrete interfaces.
 So interface is driven by external dependency. But I'd like to stress the point
 of user or app driven interfaces. We build small interfaces that are dedicated
 to concrete part of the app and use it localy. And on level of the executable 
@@ -160,9 +160,9 @@ for our next web-application.
 
 So let's dive in.
 
-## Handler patterm
+## Handle patterm
 
-The Handler pattern is a very simple way to make dependency injection (DI) in Haskell.
+The Handle pattern is a very simple way to make dependency injection (DI) in Haskell.
 We express interfaces as plain records of functions and pass them around as arguments.
 So we notice that DI in Haskell is just a currying. 
 
@@ -184,7 +184,7 @@ flavours interfaces on the spot. This comes at the price of being self-repetetiv
 as we don't use direct calls to external dependencies but call them over interface.
 This is why we have DI-in the first place. 
 
-Pros of the Handler-pattern 
+Pros of the Handle-pattern 
 
 * easy to implement and reason about (as simple as applying argument to the function)
 * very fast and efficient
@@ -331,7 +331,7 @@ approach as it allows for mutual-recursive dependencies.
 But for keeping them in interfaces graph should be acyclic.
 If your application does not need cyclic deps of interfaces.
 And I'm sure you dont want that to happen we can turn mutables
-to interfaces and this matches nicely with Handler-pattern as everything
+to interfaces and this matches nicely with Handle-pattern as everything
 becomes just a collection of interfaces.
 
 ### Hiding mutable variables with interfaces
@@ -820,7 +820,7 @@ or see which one depends on which.
 
 ### Conclusion
 
-We have discused a Handler pattern and how to use it to build flexible
+We have discused a Handle pattern and how to use it to build flexible
 web-apps with servant that are easy to change and keep development with the wave.
 
 Let's mention the points:
