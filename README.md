@@ -791,6 +791,69 @@ For our app we can see the available options with:
 stack run -- --help
 ```
 
+### Creation of middlewares
+
+We can transform our interfaces to augment the default implementation
+with some new behavior. For example we can transform the DB-interface
+to add logging for every call to DB. This approach is implemented in the branch 
+[`middlewares`](https://github.com/anton-k/handle-pattern-servant-app/tree/middlewares).
+Let's outline the idea.
+
+Take for example the interface to get the message by it's id:
+
+```haskell
+data Db = Db
+  { getMessage :: MessageId -> IO (Maybe Message)
+  }
+```
+
+We can use logger to log every call to the interface:
+
+
+```haskell
+dbLog :: Log -> Db -> Db
+dbLog logger (Db getMessage) = Db getMessage'
+  where
+    Log{..} = addLogContext "db.getMessage"
+
+    getMessage' msgId = do
+      logInfo $ "Input message id: " <> display msgId
+      mRes <- getMessage msgId
+      case mRes of
+        Just res -> logInfo $ "Output message: " <> display res
+        Nothing  -> logError $ "Failed to get message for id: " <> display msgId
+      pure mRes
+```
+
+We transform the Db-interface in a way that every call to `getMessage` gets wrappped
+with logging calls. After that transformation we can even omit the logger
+from the dependency of the handler and we can just use transdormed DB-interface.
+
+We can apply transdformation in the `Main` function prior to launch of the app:
+
+```haskell
+    -- init local envirnoments
+    env =
+      Env
+        {
+           save = ...
+
+           getMessage = 
+             let logGetMessage = addLogContext "api.get-message" ilog
+             in  GetMessage.Env (GetMessage.dbLog logGetMessage idb.getMessage) logGetMessage
+
+           listTag = ...
+
+           toggleLogs = ...
+        }
+```
+
+And we can do the same with DB-interfaces for other methods.
+This example shows how we can add middleware behavior to our interfaces
+without changing concrete implementation of the interface.
+we use interface at the input as a black box and augment it with some 
+additional behavior. In this case it was logging. 
+
 ### Scaling up
 
 So we have defined our small app. But story does not end there.
