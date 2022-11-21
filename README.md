@@ -79,8 +79,8 @@ in Haskell to build web-apps.
 
 Also we can run stress testing for our server. 
 For that we need to install [`k6`](https://k6.io/) and see
-the `README.md` for docs on how to run them in the directory `test-stress` 
-of this repo.
+the [`README.md`](https://github.com/anton-k/handle-pattern-servant-app/tree/main/test-stress) for docs on how to run them in the directory `test-stress` 
+of this repo (note that it features it's own Makefile).
 
 ### The application structure
 
