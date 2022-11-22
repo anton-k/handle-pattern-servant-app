@@ -1,9 +1,9 @@
 # Haskell Reversed Handle pattern and servant example app
 
-Showcase for a small application written with servant and Reversed Handle pattern.
+Show case for a small application written with servant and Reversed Handle pattern.
 It is an example on how to make Dependency Injection in Haskell with Handle-pattern.
 
-The main idea of reversed handler pattern is that we build interfaces for external services
+The main idea of reversed handle pattern is that we build interfaces for external services
 not driven by services themselves but by the methods we use in concrete API-routes.
 In the original article on [Handle pattern](https://jaspervdj.be/posts/2018-03-08-handle-pattern.html)
 we describe interfaces to DB or Logging based on the natural API of the library.
@@ -35,10 +35,10 @@ POST: api/v1/toggle-logs
   toggles the logs (active or silent)
 ```
 
-Application shows how to create interfaces for mocks and real instances.
+Applications shows how to  create interfaces for mocks and real instances.
 Also we show how to use interfaces that depend on run-time data 
 and how we can split the top-level interface to smaller ones dedicated to concrete methods.
-On save message is augmented with current timestamp which is queried over external service.
+On save message is augmented with current time stamp which is queried over external service.
 We use `getCurrentTime` for mock but it serves as an example of external dependency.
 
 ### Application user guide
@@ -104,7 +104,7 @@ Executable `app/` implements interfaces initialises service state and launches t
 ## Introduction
 
 In this example and tutorial we will learn how to build flexible
-web-apps with the help of handler pattern. We will mention some key-factors
+web-apps with the help of handle pattern. We will mention some key-factors
 of the web-development domain, discuss the problems and solutions
 and look at how to combine Handle pattern with servant.
 While implementing a small app.
@@ -121,16 +121,16 @@ What we will learn:
    external service but from the user perspective of the app. From what our
    app wants form that external service in the given API-route.
 
-* the web-app domain is like N ocean wave, not a solid ground to build castles.
+* the web-app domain is ocean wave not a solid ground to build castles.
    So we need to build with presence of uncertainty and unexpected changes in mind.
    Which corresponds badly with mathematical thinking. 
    We need to use more flexible solutions.
 
 * How to hide mutable state with interfaces
 
-In this app we use the Handle pattern for DI's.
+In this app we use the Handle pattern for DI's
 But our version of Handle pattern is reversed in terms of where interfaces originate.
-In the original Handle pattern, we wrap external services with concrete interfaces.
+In original Handle pattern we wrap external services with concrete interfaces.
 So interface is driven by external dependency. But I'd like to stress the point
 of user or app driven interfaces. We build small interfaces that are dedicated
 to concrete part of the app and use it locally. And on level of the executable 
@@ -157,7 +157,7 @@ So here is my progress:
 * split env to local per API-route interfaces
 * find out that mutable state can be hidden with interfaces also
 * but if everything is described in interfaces, do we really need `ReaderT` at all?
-* handler pattern: `interfaces -> request -> IO response`
+* handle pattern: `interfaces -> request -> IO response`
 
 During rewrite of the library code the library code size reduced from 266 to 210 LOC.
 I've remove all dependencies on mtl, exceptions, `liftIO` and etc. from the code. 
@@ -174,7 +174,7 @@ We express interfaces as plain records of functions and pass them around as argu
 So we notice that DI in Haskell is just a currying. 
 
 Why do we go with records and not with type classes? Because they are more flexible.
-We can store them as a value, pass to a function, transform with a function, keep in collection
+We can store them as a value, pass to the function, transform with the function, keep in collection
 and even in mutable refs and they are not tied to particular type that is instance of the type class.
 
 Using records can be somewhat cumbersome with polymorphic functions as generic parameters
@@ -184,7 +184,7 @@ rarely needed in web-apps so we can stick with plain `IO` and handling errors wi
 There is alternative way to pass interfaces with Reader-pattern. 
 Reader pattern encapsulates the collection of interfaces into environment.
 But this approach can lead to frustration that we need to have uniform collection
-of interfaces for all functions. And also we have some tiny performance overhead.
+of interfaces for all functions. And also we have some tiny performance  overhead.
 
 In contrast with currying we have no performance penalty and we can pass different 
 flavours interfaces on the spot. This comes at the price of being self-repetitive
@@ -228,7 +228,7 @@ doSomethingWithStorage Db{..} msg = ... use interface ...
 ```
 
 We can use `RecordWildCards` extension to bring all functions of the interface in
-scope of the function. This is our `import` for interfaces.
+scope of the function. This our `import` for interfaces.
 
 Also interfaces can be organised in groups:
 
@@ -249,7 +249,7 @@ logAndStore (Env Db{..} Log{..}) a = ...
 
 We can also have collection of interfaces. Imagine that we have a
 list of competing http-services that can be identified by name and all
-of them can be wrapped in some interface. 
+of them can be wrapped in the some interface. 
 
 We can create a map of interfaces:
 
@@ -258,23 +258,23 @@ type Services = Map ServiceName ServiceInterface
 ```
 
 We can do some fun with it like querying a method concurrently and returning
-whichever returns first. Or iterating over all of them and returning result in a list.
+which ever returns first. Or iterating over all of them and returning result in the list.
 This all stems from the benefit of having interfaces as plain values.
 
 For the web application we will pass the interface record to the handler of the API-route
 as first argument:
 
 ```haskell
-handler :: Interface -> ApiRequest -> IO ApiResponse
+handler :: Interface -> ApiRequest -> IO ApiResponce
 ```
 
 ### Mutable internal state as interface
 
-I used to extensively apply the Reader-pattern to keep track of internal state in `TVars`.
+I used to extensively apply the Reader-pattern to keep the track of internal state in `TVars`.
 But it's interesting to note that with some discipline mutable variable management can also 
 be organised in interfaces.
 
-In our app we have mutable shared state of logger verbosity which we can update by calling an API-method
+In our app we have mutable shared state of logger verbosity we can update it by calling a API-method
 `toggle-logs`. It turns out that instead of using `TVar` directly we can pass it 
 to interface initialization functions and internally if they rely on IO and usually they do
 as we express external services with interfaces. They can read those variables
@@ -310,8 +310,8 @@ data Setup = Setup
   }
 ```
 
-And in the executable code we can initialise `TVar` and
-pass it to the interface constructors for `Log` and `Setup`
+And in in the executable code we can initialise `TVar` and
+pass it to interface constructors for `Log` and `Setup`
 
 
 ```haskell
@@ -323,13 +323,13 @@ initEnv = do
   pure $ Env setup log
 ```
 
-Note that `Setup` is not a data structure, it's an interface
+Note that `Setup` is not a data structure it's an interface
 to trigger changes in the configs of the system.
 And we share the link between logger and config only inside the executable `app`.
 On the level of the library they look decoupled.
 
 This way we are not forced to chose `TVar` between some other method of
-sharing mutable state. It's all hidden from the library.
+sharing mutable state. It's all hided from the library.
 By the `Env` we only see the list of available actions 
 that can be performed on the app in terms of interfaces.
 
@@ -385,7 +385,7 @@ in the `app/App/DI` modules.
 
 ### Using it with Servant
 
-In servant, we need to wrap response to Servant.Handler monad.
+In the servant we need to wrap response to Servant.Handler monad.
 The main idea of the approach is to use servant only on top-level Server-method
 and inside handlers we should work only in terms of the `IO` and interfaces
 that are passed as arguments to the handlers.
@@ -467,7 +467,7 @@ and try them out.
 
 ### Flexibility of record-style interfaces
 
-I'd like to mention how easy it is to adapt our interfaces. As they are
+I'd like to mention how easy it's to adapt our interfaces. As they are
 expressed as plain functions in the records. 
 Let's consider logging example. We need to define the logging context dedicated
 to specific route. For example we need to prefix the logs with the name of the route.
