@@ -151,9 +151,9 @@ which eventually lead me to the question: Do we really need Reader in the first 
 
 So here is my progress:
 
-* `type App rnv a = ReaderT env (ExceptT IO) a`
-* `newtype App rnv a = App (ReaderT env (ExceptT IO) a) deriving newtype (...)`
-* `newtype App rnv a = App (ReaderT env IO a)`
+* `type App env a = ReaderT env (ExceptT IO) a`
+* `newtype App env a = App (ReaderT env (ExceptT IO) a) deriving newtype (...)`
+* `newtype App env a = App (ReaderT env IO a)`
 * split env to local per API-route interfaces
 * find out that mutable state can be hidden with interfaces also
 * but if everything is described in interfaces, do we really need `ReaderT` at all?
